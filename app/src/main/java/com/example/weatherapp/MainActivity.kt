@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -53,12 +55,50 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    mainPage()
                 }
             }
         }
     }
 }
+
+var informacaoSeteDias = listOf(
+    temperaturaDia(
+        temperatura = 25,
+        estado = "Limpo",
+        resource = R.drawable.sun
+    ),
+    temperaturaDia(
+        temperatura = 13,
+        estado = "Nublado",
+        resource = R.drawable.cloudy
+    ),
+    temperaturaDia(
+        temperatura = 15,
+        estado = "Nuvem",
+        resource = R.drawable.snowy
+    ),
+    temperaturaDia(
+        temperatura = 19,
+        estado = "Chuva",
+        resource = R.drawable.rainy
+    ),
+    temperaturaDia(
+        temperatura = 6,
+        estado = "Tempestade",
+        resource = R.drawable.storm
+    ),
+    temperaturaDia(
+        temperatura = 18,
+        estado = "Chuva",
+        resource = R.drawable.rainy
+    ),
+    temperaturaDia(
+        temperatura = 4,
+        estado = "Tempestade",
+        resource = R.drawable.storm
+    )
+)
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
@@ -87,7 +127,47 @@ fun mainPage(): Unit {
         Cabecalho()
         Informacao()
         imagemCentral()
+        proximosSeteDias()
     }
+}
+
+
+@Preview(showBackground = true, heightDp = 350, widthDp = 380)
+@Composable
+fun proximosSeteDias(): Unit {
+    LazyRow(){
+       items(informacaoSeteDias){
+           proximoDia(temperaturaDia = it)
+       }
+    }
+}
+
+
+@Composable
+fun proximoDia(temperaturaDia: temperaturaDia): Unit {
+
+    Column (
+        modifier = Modifier
+            .width(100.dp)
+            .padding(15.dp, 15.dp, 15.dp, 15.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(painter = painterResource(id = temperaturaDia.resource), contentDescription = temperaturaDia.estado)
+        Text(text = temperaturaDia.temperatura.toString())
+
+        var tamanhoFonte = TextUnit(15f, TextUnitType.Sp)
+
+        if (temperaturaDia.estado == "Tempestade"){
+            tamanhoFonte = TextUnit(11f, TextUnitType.Sp)
+        }
+        
+        Text(text = temperaturaDia.estado, fontSize = tamanhoFonte
+
+
+        )
+    }
+
+
 }
 
 @Preview(showBackground = true, heightDp = 350, widthDp = 380)
